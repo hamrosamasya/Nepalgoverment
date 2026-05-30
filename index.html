@@ -31,6 +31,7 @@
             font-weight: bold; 
         }
         
+        /* Nepal Flag CSS */
         .flag {
             width: 40px;
             height: 32px;
@@ -39,7 +40,6 @@
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
-        
         .flag-top {
             position: absolute;
             top: 0;
@@ -48,7 +48,6 @@
             height: 50%;
             background: #DC143C;
         }
-        
         .flag-bottom {
             position: absolute;
             bottom: 0;
@@ -57,7 +56,6 @@
             height: 50%;
             background: #003893;
         }
-        
         .flag-symbol {
             position: absolute;
             top: 50%;
@@ -119,6 +117,22 @@
         .preview-item { position: relative; border-radius: 10px; overflow: hidden; }
         .preview-item img { width: 100%; height: 120px; object-fit: cover; }
         
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            padding: 1.5rem;
+            margin: 1rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .filter-section label { font-weight: bold; color: var(--blue); }
+        .filter-section select { padding: 10px 15px; border: 2px solid var(--blue); border-radius: 10px; font-size: 1rem; min-width: 200px; }
+        
         /* Problems List */
         .problems-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; padding: 2rem; max-width: 1200px; margin: 0 auto; }
         .problem-card { background: white; border-radius: 15px; padding: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s; border-left: 4px solid var(--blue); }
@@ -144,6 +158,7 @@
             .stats-banner { gap: 1.5rem; }
             .problems-grid { grid-template-columns: 1fr; }
             .phone-input { flex-direction: column; }
+            .filter-section { flex-direction: column; }
         }
     </style>
 </head>
@@ -229,11 +244,25 @@
             </div>
             <div class="form-group">
                 <label>📋 Extended Description <span class="optional">(Optional - अधिक विवरण)</span></label>
-                <textarea id="extendedDesc" rows="4" placeholder="More details about the problem, when it started, how it affects you..."></textarea>
+                <textarea id="extendedDesc" rows="4" placeholder="More details about the problem..."></textarea>
             </div>
             <div class="form-group">
                 <label>📍 Location / स्थान *</label>
-                <input type="text" id="location" placeholder="Village, Municipality, District" required>
+                <select id="location" required>
+                    <option value="">Select Your District</option>
+                    <option value="🌆 Kathmandu">🌆 Kathmandu</option>
+                    <option value="🏰 Bhaktapur">🏰 Bhaktapur</option>
+                    <option value="🏘️ Lalitpur">🏘️ Lalitpur</option>
+                    <option value="🏞️ Pokhara">🏞️ Pokhara</option>
+                    <option value="🌉 Biratnagar">🌉 Biratnagar</option>
+                    <option value="🚂 Birgunj">🚂 Birgunj</option>
+                    <option value="🧘 Lumbini">🧘 Lumbini</option>
+                    <option value="🏭 Dharan">🏭 Dharan</option>
+                    <option value="🌸 Janakpur">🌸 Janakpur</option>
+                    <option value="🏔️ Chitwan">🏔️ Chitwan</option>
+                    <option value="🌄 Butwal">🌄 Butwal</option>
+                    <option value="🏙️ Nepalgunj">🏙️ Nepalgunj</option>
+                </select>
             </div>
             <div class="form-group">
                 <label>🖼️ Photos/Videos</label>
@@ -254,48 +283,6 @@
         </div>
     </section>
 
-    <!-- Problems List -->
+    <!-- Problems List with Filter -->
     <section class="form-section" id="problemsList">
-        <h2 class="form-title">👁️ सबै समस्याहरू / All Problems</h2>
-        <div class="problems-grid" id="problemsGrid">
-            <!-- Problems will appear here -->
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-flag">🚩</div>
-        <p>© 2024 Hamro Samasya | Government of Nepal</p>
-    </footer>
-
-    <script>
-        // Sample problems data
-        let problems = [
-            { id: 'HM001', phone: '98XXXXXX12', title: 'Broken street light', category: '💡 Electricity', description: 'Street light not working for 2 weeks. Area is very dark at night.', location: 'Kathmandu, Nepal', date: '2024-01-15' },
-            { id: 'HM002', phone: '98XXXXXX34', title: 'Big road hole', category: '🛣️ Road', description: 'Big hole in middle of road causing accidents. Very dangerous!', location: 'Pokhara, Nepal', date: '2024-01-14' },
-            { id: 'HM003', phone: '98XXXXXX56', title: 'No water supply', category: '💧 Water', description: 'No water for 3 days. Difficult for families.', location: 'Lalitpur, Nepal', date: '2024-01-13' },
-            { id: 'HM004', phone: '98XXXXXX78', title: 'Garbage not collected', category: '🛣️ Road', description: 'Garbage piled up for 1 week. Smell is very bad.', location: 'Bhaktapur, Nepal', date: '2024-01-12' }
-        ];
-
-        function showTab(tab) {
-            document.getElementById('hero').style.display = 'none';
-            if (tab === 'report') {
-                document.getElementById('reportForm').classList.add('active');
-                document.getElementById('problemsList').classList.remove('active');
-                document.getElementById('tabReport').classList.add('active');
-                document.getElementById('tabProblems').classList.remove('active');
-            } else {
-                document.getElementById('reportForm').classList.remove('active');
-                document.getElementById('problemsList').classList.add('active');
-                document.getElementById('tabReport').classList.remove('active');
-                document.getElementById('tabProblems').classList.add('active');
-                displayProblems();
-            }
-        }
-
-        function showReport() { showTab('report'); }
-        function showProblems() { showTab('problems'); }
-
-        function displayProblems() {
-            const grid = document.getElementById('problemsGrid');
-            if (problems.length === 0) {
-                grid.innerHTML
+        <h2 class="form-title">👁️ सबै समस्याहरू / All Problems
