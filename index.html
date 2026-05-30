@@ -6,127 +6,296 @@
     <title>Hamro Samasya - हाम्रो समस्या</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --red: #DC143C; --blue: #003893; }
-        body { background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%); min-height: 100vh; }
-        header { background: var(--blue); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: bold; }
+        :root { --red: #DC143C; --blue: #003893; --dark-blue: #00246a; }
+        body { background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%); min-height: 100vh; font-family: 'Segoe UI', sans-serif; }
+        
+        /* Header with Nepal Flag */
+        header { 
+            background: linear-gradient(90deg, var(--blue) 0%, var(--dark-blue) 100%); 
+            color: white; 
+            padding: 1rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+        }
+        
+        .flag {
+            width: 40px;
+            height: 32px;
+            position: relative;
+            border-radius: 3px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .flag-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: #DC143C;
+        }
+        
+        .flag-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: #003893;
+        }
+        
+        .flag-symbol {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            color: white;
+            font-weight: bold;
+        }
+        
         .logo span { color: var(--red); }
+        
+        .nav-btns { display: flex; gap: 10px; }
         .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; }
         .btn-primary { background: var(--red); color: white; }
-        .hero { text-align: center; padding: 5rem 2rem; background: white; margin: 2rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .btn-outline { background: transparent; color: white; border: 2px solid white; }
+        
+        /* Hero */
+        .hero { text-align: center; padding: 4rem 2rem; background: white; margin: 2rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
         .hero h2 { font-size: 2.5rem; color: var(--blue); margin-bottom: 1rem; }
         .hero p { font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto 2rem; }
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; padding: 2rem; max-width: 1200px; margin: 0 auto; }
-        .feature-card { background: white; padding: 2rem; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        .feature-card .icon { font-size: 3rem; }
-        .feature-card h3 { color: var(--blue); margin: 1rem 0; }
-        .report-form { max-width: 800px; margin: 2rem auto; background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        .form-title { text-align: center; color: var(--blue); margin-bottom: 2rem; }
+        
+        /* Stats Banner */
+        .stats-banner {
+            background: linear-gradient(90deg, var(--blue), var(--dark-blue));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin: 0 2rem;
+            border-radius: 15px;
+        }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: bold; }
+        .stat-label { font-size: 0.9rem; opacity: 0.9; }
+        
+        /* Tabs */
+        .tabs { display: flex; justify-content: center; gap: 1rem; padding: 1rem; }
+        .tab-btn { padding: 15px 30px; font-size: 1.1rem; background: white; border: 2px solid var(--blue); color: var(--blue); border-radius: 10px; cursor: pointer; }
+        .tab-btn.active { background: var(--blue); color: white; }
+        
+        /* Form */
+        .form-section { display: none; max-width: 800px; margin: 2rem auto; background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .form-section.active { display: block; }
+        .form-title { text-align: center; color: var(--blue); margin-bottom: 2rem; font-size: 1.8rem; }
         .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333; }
+        .form-group .optional { font-size: 0.8rem; color: #888; font-weight: normal; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 1rem; }
-        .form-group input:focus { outline: none; border-color: var(--blue); }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--blue); }
         .phone-input { display: flex; gap: 10px; }
-        .phone-input select { width: 100px; padding: 12px; border: 2px solid #ddd; border-radius: 10px; }
-        .otp-section { display: none; background: #f0f8ff; padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; }
-        .upload-area { border: 3px dashed #ddd; padding: 3rem; text-align: center; border-radius: 15px; cursor: pointer; }
+        .phone-input select { width: 100px; }
+        .upload-area { border: 3px dashed #ddd; padding: 2rem; text-align: center; border-radius: 15px; cursor: pointer; transition: 0.3s; }
         .upload-area:hover { border-color: var(--blue); background: #f0f8ff; }
-        .preview-area { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .preview-area { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 1rem; }
         .preview-item { position: relative; border-radius: 10px; overflow: hidden; }
-        .preview-item img { width: 100%; height: 150px; object-fit: cover; }
+        .preview-item img { width: 100%; height: 120px; object-fit: cover; }
+        
+        /* Problems List */
+        .problems-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+        .problem-card { background: white; border-radius: 15px; padding: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s; border-left: 4px solid var(--blue); }
+        .problem-card:hover { transform: translateY(-5px); }
+        .problem-card .category { display: inline-block; padding: 5px 12px; background: var(--blue); color: white; border-radius: 20px; font-size: 0.8rem; margin-bottom: 10px; }
+        .problem-card .title { font-size: 1.2rem; font-weight: bold; color: #333; margin-bottom: 10px; }
+        .problem-card .description { color: #666; margin-bottom: 10px; line-height: 1.5; }
+        .problem-card .location { color: var(--blue); font-size: 0.9rem; display: flex; align-items: center; gap: 5px; }
+        .problem-card .date { color: #aaa; font-size: 0.8rem; margin-top: 10px; }
+        .problem-card .ref { color: var(--red); font-weight: bold; }
+        
+        .no-problems { text-align: center; padding: 3rem; color: #888; grid-column: 1 / -1; }
+        
+        /* Success */
         .success-message { display: none; text-align: center; padding: 3rem; background: #d4edda; border-radius: 15px; color: #155724; }
-        .reference-id { font-size: 1.5rem; font-weight: bold; color: var(--red); }
+        .success-message.show { display: block; }
+        
+        /* Footer */
         footer { background: var(--blue); color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        .footer-flag { font-size: 2rem; margin-bottom: 10px; }
+        
+        @media (max-width: 768px) {
+            .stats-banner { gap: 1.5rem; }
+            .problems-grid { grid-template-columns: 1fr; }
+            .phone-input { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
+    <!-- Header with Nepal Flag -->
     <header>
-        <div class="logo">🚩 Hamro <span>Samasya</span></div>
-        <button class="btn btn-primary" onclick="document.getElementById('reportForm').scrollIntoView()">Report Problem</button>
+        <div class="logo">
+            <div class="flag">
+                <div class="flag-top"></div>
+                <div class="flag-bottom"></div>
+                <span class="flag-symbol">☵</span>
+            </div>
+            Hamro <span>Samasya</span>
+        </div>
+        <div class="nav-btns">
+            <button class="btn btn-outline" onclick="showProblems()">See Problems</button>
+            <button class="btn btn-primary" onclick="showReport()">Report Problem</button>
+        </div>
     </header>
-    <section class="hero">
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
         <h2>🚨 समस्या रिपोर्ट गर्नुहोस्</h2>
-        <p>आफ्नो समुदायमा देखिएका समस्याहरू सीधै सरकारलाई जानकारी गर्नुहोस्।</p>
-        <button class="btn btn-primary" onclick="document.getElementById('reportForm').scrollIntoView()">Report Now</button>
+        <p>आफ्नो समुदायमा देखिएका समस्याहरू सीधै सरकारलाई जानकारी गर्नुहोस्। सबैले देख्न पनि सक्नुहुन्छ।</p>
+        <button class="btn btn-primary" onclick="showReport()">Report Now / रिपोर्ट गर्नुहोस्</button>
+        <br><br>
+        <button class="btn btn-outline" onclick="showProblems()" style="border-color: var(--blue); color: var(--blue);">See All Problems</button>
     </section>
-    <section class="features">
-        <div class="feature-card"><div class="icon">📷</div><h3>फोटो/भिडियो</h3><p>समस्याको फोटो अपलोड गर्नुहोस्</p></div>
-        <div class="feature-card"><div class="icon">📍</div><h3>लोकेशन</h3><p>स्थान खुलाउनुहोस्</p></div>
-        <div class="feature-card"><div class="icon">📱</div><h3>फोन भेरिफिकेशन</h3><p>केवल नेपाली फोन</p></div>
-        <div class="feature-card"><div class="icon">✅</div><h3>ट्र्याकिङ</h3><p>स्थिति हेर्नुहोस्</p></div>
-    </section>
-    <section class="report-form" id="reportForm">
+
+    <!-- Stats Banner -->
+    <div class="stats-banner">
+        <div class="stat-item">
+            <div class="stat-number">1,234</div>
+            <div class="stat-label">Problems Reported</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">567</div>
+            <div class="stat-label">Solved</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">89</div>
+            <div class="stat-label">Districts</div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('report')" id="tabReport">📝 Report Problem</button>
+        <button class="tab-btn" onclick="showTab('problems')" id="tabProblems">👁️ See Problems</button>
+    </div>
+
+    <!-- Report Form -->
+    <section class="form-section active" id="reportForm">
         <h2 class="form-title">📝 समस्या रिपोर्ट फारम</h2>
         <form id="problemForm">
             <div class="form-group">
-                <label>📱 Phone Number *</label>
+                <label>📱 Phone Number / फोन नम्बर *</label>
                 <div class="phone-input">
                     <select><option value="+977">+977</option></select>
                     <input type="tel" id="phone" placeholder="98XXXXXXXX" maxlength="10" required>
                 </div>
             </div>
             <div class="form-group">
-                <label>📌 Problem Title *</label>
+                <label>📌 Problem Title / शीर्षक *</label>
                 <input type="text" id="title" placeholder="Example: Broken street light..." required>
             </div>
             <div class="form-group">
-                <label>🏷️ Category *</label>
+                <label>🏷️ Category / श्रेणी *</label>
                 <select id="category" required>
                     <option value="">Select Category</option>
-                    <option value="road">🛣️ Road & Infrastructure</option>
-                    <option value="electricity">💡 Electricity</option>
-                    <option value="water">💧 Water Supply</option>
-                    <option value="health">🏥 Health</option>
-                    <option value="other">📌 Other</option>
+                    <option value="🛣️ Road">🛣️ Road & Infrastructure</option>
+                    <option value="💡 Electricity">💡 Electricity</option>
+                    <option value="💧 Water">💧 Water Supply</option>
+                    <option value="🏥 Health">🏥 Health</option>
+                    <option value="🏫 Education">🏫 Education</option>
+                    <option value="🚔 Safety">🚔 Safety</option>
+                    <option value="📌 Other">📌 Other</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>📄 Description *</label>
-                <textarea id="description" rows="4" placeholder="Describe the problem..." required></textarea>
+                <label>📄 Description / विवरण *</label>
+                <textarea id="description" rows="3" placeholder="Short description..." required></textarea>
             </div>
             <div class="form-group">
-                <label>📍 Location *</label>
+                <label>📋 Extended Description <span class="optional">(Optional - अधिक विवरण)</span></label>
+                <textarea id="extendedDesc" rows="4" placeholder="More details about the problem, when it started, how it affects you..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>📍 Location / स्थान *</label>
                 <input type="text" id="location" placeholder="Village, Municipality, District" required>
             </div>
             <div class="form-group">
                 <label>🖼️ Photos/Videos</label>
                 <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                    <p>📁 Click to upload files</p>
+                    <p>📁 Click to upload photos/videos</p>
                 </div>
                 <input type="file" id="fileInput" style="display:none" multiple accept="image/*,video/*">
                 <div class="preview-area" id="previewArea"></div>
             </div>
             <button type="submit" class="btn btn-primary" style="width:100%;padding:15px;font-size:1.2rem;">Submit Report</button>
         </form>
+        
+        <div class="success-message" id="successMsg">
+            <h2>✅ रिपोर्ट सफल!</h2>
+            <p>Reference ID: <span class="ref" id="refId"></span></p>
+            <p>तपाईंको समस्या दर्ता भयो।</p>
+            <button class="btn btn-primary" onclick="showProblems()" style="margin-top:15px;">See All Problems</button>
+        </div>
     </section>
+
+    <!-- Problems List -->
+    <section class="form-section" id="problemsList">
+        <h2 class="form-title">👁️ सबै समस्याहरू / All Problems</h2>
+        <div class="problems-grid" id="problemsGrid">
+            <!-- Problems will appear here -->
+        </div>
+    </section>
+
     <footer>
+        <div class="footer-flag">🚩</div>
         <p>© 2024 Hamro Samasya | Government of Nepal</p>
     </footer>
+
     <script>
-        document.getElementById('problemForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            var ref = 'HM' + Math.random().toString(36).substr(2, 8).toUpperCase();
-            document.getElementById('problemForm').style.display = 'none';
-            var success = document.createElement('div');
-            success.className = 'success-message';
-            success.style.display = 'block';
-            success.innerHTML = '<h2>✅ रिपोर्ट सफल!</h2><p>Reference ID: <span class="reference-id">' + ref + '</span></p><p>तपाईंको समस्या दर्ता भयो।</p>';
-            document.getElementById('reportForm').appendChild(success);
-        });
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            var preview = document.getElementById('previewArea');
-            preview.innerHTML = '';
-            for(var file of this.files) {
-                var reader = new FileReader();
-                reader.onload = function(evt) {
-                    var div = document.createElement('div');
-                    div.className = 'preview-item';
-                    div.innerHTML = '<img src="' + evt.target.result + '">';
-                    preview.appendChild(div);
-                };
-                reader.readAsDataURL(file);
+        // Sample problems data
+        let problems = [
+            { id: 'HM001', phone: '98XXXXXX12', title: 'Broken street light', category: '💡 Electricity', description: 'Street light not working for 2 weeks. Area is very dark at night.', location: 'Kathmandu, Nepal', date: '2024-01-15' },
+            { id: 'HM002', phone: '98XXXXXX34', title: 'Big road hole', category: '🛣️ Road', description: 'Big hole in middle of road causing accidents. Very dangerous!', location: 'Pokhara, Nepal', date: '2024-01-14' },
+            { id: 'HM003', phone: '98XXXXXX56', title: 'No water supply', category: '💧 Water', description: 'No water for 3 days. Difficult for families.', location: 'Lalitpur, Nepal', date: '2024-01-13' },
+            { id: 'HM004', phone: '98XXXXXX78', title: 'Garbage not collected', category: '🛣️ Road', description: 'Garbage piled up for 1 week. Smell is very bad.', location: 'Bhaktapur, Nepal', date: '2024-01-12' }
+        ];
+
+        function showTab(tab) {
+            document.getElementById('hero').style.display = 'none';
+            if (tab === 'report') {
+                document.getElementById('reportForm').classList.add('active');
+                document.getElementById('problemsList').classList.remove('active');
+                document.getElementById('tabReport').classList.add('active');
+                document.getElementById('tabProblems').classList.remove('active');
+            } else {
+                document.getElementById('reportForm').classList.remove('active');
+                document.getElementById('problemsList').classList.add('active');
+                document.getElementById('tabReport').classList.remove('active');
+                document.getElementById('tabProblems').classList.add('active');
+                displayProblems();
             }
-        });
-    </script>
-</body>
-</html>
+        }
+
+        function showReport() { showTab('report'); }
+        function showProblems() { showTab('problems'); }
+
+        function displayProblems() {
+            const grid = document.getElementById('problemsGrid');
+            if (problems.length === 0) {
+                grid.innerHTML
