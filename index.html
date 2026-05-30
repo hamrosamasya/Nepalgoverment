@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamro Samasya - हाम्रो समस्या</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --red: #DC143C; --blue: #003893; }
+        body { background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%); min-height: 100vh; }
+        header { background: var(--blue); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: bold; }
+        .logo span { color: var(--red); }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; }
+        .btn-primary { background: var(--red); color: white; }
+        .hero { text-align: center; padding: 5rem 2rem; background: white; margin: 2rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .hero h2 { font-size: 2.5rem; color: var(--blue); margin-bottom: 1rem; }
+        .hero p { font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto 2rem; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+        .feature-card { background: white; padding: 2rem; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .feature-card .icon { font-size: 3rem; }
+        .feature-card h3 { color: var(--blue); margin: 1rem 0; }
+        .report-form { max-width: 800px; margin: 2rem auto; background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .form-title { text-align: center; color: var(--blue); margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 1rem; }
+        .form-group input:focus { outline: none; border-color: var(--blue); }
+        .phone-input { display: flex; gap: 10px; }
+        .phone-input select { width: 100px; padding: 12px; border: 2px solid #ddd; border-radius: 10px; }
+        .otp-section { display: none; background: #f0f8ff; padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; }
+        .upload-area { border: 3px dashed #ddd; padding: 3rem; text-align: center; border-radius: 15px; cursor: pointer; }
+        .upload-area:hover { border-color: var(--blue); background: #f0f8ff; }
+        .preview-area { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .preview-item { position: relative; border-radius: 10px; overflow: hidden; }
+        .preview-item img { width: 100%; height: 150px; object-fit: cover; }
+        .success-message { display: none; text-align: center; padding: 3rem; background: #d4edda; border-radius: 15px; color: #155724; }
+        .reference-id { font-size: 1.5rem; font-weight: bold; color: var(--red); }
+        footer { background: var(--blue); color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">🚩 Hamro <span>Samasya</span></div>
+        <button class="btn btn-primary" onclick="document.getElementById('reportForm').scrollIntoView()">Report Problem</button>
+    </header>
+    <section class="hero">
+        <h2>🚨 समस्या रिपोर्ट गर्नुहोस्</h2>
+        <p>आफ्नो समुदायमा देखिएका समस्याहरू सीधै सरकारलाई जानकारी गर्नुहोस्।</p>
+        <button class="btn btn-primary" onclick="document.getElementById('reportForm').scrollIntoView()">Report Now</button>
+    </section>
+    <section class="features">
+        <div class="feature-card"><div class="icon">📷</div><h3>फोटो/भिडियो</h3><p>समस्याको फोटो अपलोड गर्नुहोस्</p></div>
+        <div class="feature-card"><div class="icon">📍</div><h3>लोकेशन</h3><p>स्थान खुलाउनुहोस्</p></div>
+        <div class="feature-card"><div class="icon">📱</div><h3>फोन भेरिफिकेशन</h3><p>केवल नेपाली फोन</p></div>
+        <div class="feature-card"><div class="icon">✅</div><h3>ट्र्याकिङ</h3><p>स्थिति हेर्नुहोस्</p></div>
+    </section>
+    <section class="report-form" id="reportForm">
+        <h2 class="form-title">📝 समस्या रिपोर्ट फारम</h2>
+        <form id="problemForm">
+            <div class="form-group">
+                <label>📱 Phone Number *</label>
+                <div class="phone-input">
+                    <select><option value="+977">+977</option></select>
+                    <input type="tel" id="phone" placeholder="98XXXXXXXX" maxlength="10" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>📌 Problem Title *</label>
+                <input type="text" id="title" placeholder="Example: Broken street light..." required>
+            </div>
+            <div class="form-group">
+                <label>🏷️ Category *</label>
+                <select id="category" required>
+                    <option value="">Select Category</option>
+                    <option value="road">🛣️ Road & Infrastructure</option>
+                    <option value="electricity">💡 Electricity</option>
+                    <option value="water">💧 Water Supply</option>
+                    <option value="health">🏥 Health</option>
+                    <option value="other">📌 Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>📄 Description *</label>
+                <textarea id="description" rows="4" placeholder="Describe the problem..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label>📍 Location *</label>
+                <input type="text" id="location" placeholder="Village, Municipality, District" required>
+            </div>
+            <div class="form-group">
+                <label>🖼️ Photos/Videos</label>
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <p>📁 Click to upload files</p>
+                </div>
+                <input type="file" id="fileInput" style="display:none" multiple accept="image/*,video/*">
+                <div class="preview-area" id="previewArea"></div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;padding:15px;font-size:1.2rem;">Submit Report</button>
+        </form>
+    </section>
+    <footer>
+        <p>© 2024 Hamro Samasya | Government of Nepal</p>
+    </footer>
+    <script>
+        document.getElementById('problemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var ref = 'HM' + Math.random().toString(36).substr(2, 8).toUpperCase();
+            document.getElementById('problemForm').style.display = 'none';
+            var success = document.createElement('div');
+            success.className = 'success-message';
+            success.style.display = 'block';
+            success.innerHTML = '<h2>✅ रिपोर्ट सफल!</h2><p>Reference ID: <span class="reference-id">' + ref + '</span></p><p>तपाईंको समस्या दर्ता भयो।</p>';
+            document.getElementById('reportForm').appendChild(success);
+        });
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            var preview = document.getElementById('previewArea');
+            preview.innerHTML = '';
+            for(var file of this.files) {
+                var reader = new FileReader();
+                reader.onload = function(evt) {
+                    var div = document.createElement('div');
+                    div.className = 'preview-item';
+                    div.innerHTML = '<img src="' + evt.target.result + '">';
+                    preview.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
